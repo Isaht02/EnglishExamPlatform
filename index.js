@@ -6,8 +6,8 @@ const adminRoute = require("./src/routes/admin.route")
 require("dotenv").config();
 
 app.use(express.json());
-app.use("/admin", adminRoute);
-app.use(express.static(path.join(__dirname, 'src')));
+app.use("/", adminRoute);
+// app.use(express.static(path.join(__dirname, 'src')));
 
 // Add your routes here
 // app.use((req, res) => {
@@ -26,6 +26,6 @@ mongoose
       console.log(`Server is running on port ${process.env.PORT}`);
     });
   })
-  .catch(() => {
-    console.log("Connection failed!");
+  .catch((error) => {
+    console.log("Connection failed!", error);
   });

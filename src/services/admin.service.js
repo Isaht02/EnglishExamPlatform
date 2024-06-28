@@ -31,11 +31,16 @@ const signIn = async ({ email, password }) => {
     }
   );
 
-  return { token, user };
+  return { token, admin };
 };
 
 const signOut = async (refreshToken) => {
-
+  const admin = await Admin.findOne({ refreshToken });
+  if (!admin) {
+    throw new Error("Invalid refresh token");
+  }
+  admin.refreshToken = null;
+  await admin.save();
 };
 
 //Admin
