@@ -1,5 +1,4 @@
 const Questions = require('../models/questions.model')
-const mongoose = require('mongoose')
 
 module.exports = {
 	
