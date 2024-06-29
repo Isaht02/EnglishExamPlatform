@@ -1,10 +1,16 @@
 const express = require('express')
 const app = express()
+const path = require('path');
 const mongoose = require("mongoose");
+const adminRoute = require("./src/routes/admin.route");
+const userRoute = require("./src/routes/user.route");
 require("dotenv").config();
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
+app.use("/", adminRoute);
+app.use("/", userRoute);
+// app.use(express.static(path.join(__dirname, 'src')));
 
 
 // Add your routes here
@@ -12,13 +18,9 @@ app.use(express.json());
 //   res.status(404).send("Not Found");
 // });
 
-const QuestionsRoute = require("./routes/questions.routes");
-
-app.use("/api/questions", QuestionsRoute);
-
-app.get('/', (req, res) => {
-  res.send('Hello World 2!')
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello World 2!')
+// });
 
 
 
@@ -30,7 +32,6 @@ mongoose
       console.log(`Server is running on port ${process.env.PORT}`);
     });
   })
-  .catch((e) => {
-    console.log('Không thể kết nối tới db server: ' + e.message)
-    console.log("Connection failed!");
+  .catch((error) => {
+    console.log("Connection failed!", error);
   });
