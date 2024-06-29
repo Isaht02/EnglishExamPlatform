@@ -21,23 +21,15 @@ const UserSchema = new Schema({
 		default: "student",
 	},
 	enrolledExams: [{ // view exam done => check final grade
-		exam: { 
-			type: ObjectID, 
-			ref: "exam" 
-		},
-		answerSheet: [{
-			type: String,
-		}],
-		grade: {
-			type: Number,
-		},
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "enrolledExam"
 	}],
 	createdExams: [{// exam create by
 		type: ObjectID,
 		ref: "exam",
 	}],
 	questions: [{ // lists quest by
-		type: ObjectID,
+		type: mongoose.Schema.Types.ObjectId,
 		ref: "questions",
 	}],
 	createdAt: {

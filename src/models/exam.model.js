@@ -22,7 +22,6 @@ const ExamSchema = new Schema({
 		type: Date, 
 		default: Date.now 
 	}
-
 })
 
 module.exports = mongoose.model('exam', ExamSchema)
