@@ -6,11 +6,6 @@ const ExamSchema = new Schema({
 		type: String,
 		required: true
 	},
-	level: {
-		type: String,
-		enum: ["primarySchool", "secondarySchool", "highSchool", "IELTS", "TOEIC", "TOEFL"],
-		required: true
-	},
 	questions: [{ 
 		type: mongoose.Schema.Types.ObjectId, 
 		ref: 'questions' 

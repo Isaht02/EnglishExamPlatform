@@ -17,6 +17,11 @@ const QuestionSchema = new Schema({
 			default: false
 		},
 	}],
+	level: {
+		type: String,
+		enum: ["primarySchool", "secondarySchool", "highSchool", "IELTS", "TOEIC", "TOEFL"],
+		required: true
+	},
 	createdAt: {
 		type: Date,
 	},
