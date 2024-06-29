@@ -34,7 +34,30 @@ const createAdmin = async (req, res) => {
     });
     res.status(200).json({ message: "Admin created successfully" });
   } catch (error) {
-    cconsole.log(error);
+    console.log(error);
+    if (error.message === "Email already exists") {
+      return res.status(409).json({ error: error.message });
+    }
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const createUser = async (req, res) => {
+  // const { error } = adminSchema.validate(req.body);
+  // if (error) {
+  //   return res.status(400).send(error.details[0].message);
+  // }
+  const { email, password, firstname, lastname } = req.body;
+  try {
+    await adminService.createUser({
+      email,
+      password,
+      firstname,
+      lastname,
+    });
+    res.status(200).json({ message: "User created successfully" });
+  } catch (error) {
+    console.log(error);
     if (error.message === "Email already exists") {
       return res.status(409).json({ error: error.message });
     }
@@ -46,4 +69,5 @@ const createAdmin = async (req, res) => {
 module.exports = {
   adminSignIn,
   createAdmin,
+  createUser,
 };

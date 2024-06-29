@@ -2,11 +2,13 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const mongoose = require("mongoose");
-const adminRoute = require("./src/routes/admin.route")
+const adminRoute = require("./src/routes/admin.route");
+const userRoute = require("./src/routes/user.route");
 require("dotenv").config();
 
 app.use(express.json());
 app.use("/", adminRoute);
+app.use("/", userRoute);
 // app.use(express.static(path.join(__dirname, 'src')));
 
 // Add your routes here
