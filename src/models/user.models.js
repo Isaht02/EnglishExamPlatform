@@ -25,6 +25,9 @@ const UserSchema = new Schema({
 			type: ObjectID, 
 			ref: "exam" 
 		},
+		answerSheet: [{
+			type: String,
+		}],
 		grade: {
 			type: Number,
 		},
