@@ -1,0 +1,100 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const Admin = require("../models/admin.model");
+const User = require("../models/user.model");
+require("dotenv").config();
+
+const signIn = async ({ email, password }) => {
+  const admin = await Admin.findOne({ email });
+  if (!admin) {
+    throw new Error("Email does not exist");
+  }
+
+  // if (admin.isBlocked) {
+  //   throw new Error("Your account has been blocked");
+  // }
+
+  const validPassword = await bcrypt.compare(password, admin.password);
+  if (!validPassword) {
+    throw new Error("Invalid password");
+  }
+
+  const token = jwt.sign(
+    {
+      _id: admin._id,
+      username: admin.username,
+      email: admin.email,
+      level: admin.level,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: "168h",
+    }
+  );
+
+  return { token, admin };
+};
+
+const signOut = async (refreshToken) => {
+  const admin = await Admin.findOne({ refreshToken });
+  if (!admin) {
+    throw new Error("Invalid refresh token");
+  }
+  admin.refreshToken = null;
+  await admin.save();
+};
+
+//Admin
+const createAdmin = async ({
+  username,
+  password,
+  email,
+  level,
+}) => {
+  const existingAdmin = await Admin.findOne({ email });
+  if (existingAdmin) {
+    throw new Error("Email already exists");
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const adminLevel = level ? 1 : 3;
+
+  const newAdmin = await Admin.create({
+    username,
+    password: hashedPassword,
+    email,
+    level: adminLevel,
+  });
+
+  return newAdmin;
+};
+
+const createUser = async ({
+  email,
+  password,
+  firstname,
+  lastname,
+}) => {
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new Error("Email already exists");
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = await User.create({
+    email,
+    password: hashedPassword,
+    firstname,
+    lastname,
+  });
+
+  return newUser;
+};
+
+module.exports = {
+  signIn,
+  signOut,
+  createAdmin,
+  createUser,
+};
