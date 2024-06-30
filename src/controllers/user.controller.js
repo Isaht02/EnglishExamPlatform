@@ -1,14 +1,15 @@
 const userService = require("../services/user.service");
 
 const signUp = async (req, res) => {
-  const { email, password, confirmPassword, firstname, lastname } = req.body;
+  
+  const { email, password, confirmPassword, fullname, type } = req.body;
   try {
     await userService.signUp({
       email,
       password,
       confirmPassword,
-      firstname,
-      lastname,
+      fullname,
+      type,
     });
     res.json({ message: "User created successfully" });
   } catch (error) {

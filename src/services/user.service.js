@@ -6,8 +6,8 @@ const signUp = async ({
   email,
   password,
   confirmPassword,
-  firstname,
-  lastname,
+  fullname,
+  type,
 }) => {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -26,8 +26,8 @@ const signUp = async ({
   const newUser = await User.create({
     email,
     password: hashedPassword,
-    firstname,
-    lastname, 
+    fullname,
+    type, 
   });
 
   return newUser;
@@ -53,8 +53,8 @@ const signIn = async ({ email, password }) => {
     {
       _id: user._id,
       email: user.email,
-      firstname: user.firstname,
-      lastname: user.lastname,
+      fullname: user.fullname,
+      type: user.type,
     },
     process.env.ACCESS_TOKEN_SECRET,
     {

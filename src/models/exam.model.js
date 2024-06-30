@@ -15,8 +15,8 @@ const ExamSchema = new Schema({
 		ref: 'users' 
 	},
   	createdAt: { 
-		type: Date, default: 
-		Date.now 
+		type: Date, 
+		default: Date.now 
 	},
   	updatedAt: { 
 		type: Date, 
