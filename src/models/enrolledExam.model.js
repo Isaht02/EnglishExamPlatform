@@ -3,7 +3,13 @@ const Schema = mongoose.Schema
 
 const EnrolledExamSchema = new Schema({
 	examID: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'exam',
+		required: true
+	},
+	studentID: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'user',
 		required: true
 	},
 	answers: [{ 
@@ -11,6 +17,7 @@ const EnrolledExamSchema = new Schema({
 	}],
   	score: { 
 		type: Number, 
+		default : 0
 	},
   	startTime: { 
 		type: Date, 

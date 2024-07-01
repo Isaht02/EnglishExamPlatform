@@ -19,18 +19,6 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		default: "student",
 	},
-	enrolledExams: [{ // view exam done => check final grade
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "enrolledExam"
-	}],
-	createdExams: [{// exam create by
-		type: mongoose.Schema.Types.ObjectID,
-		ref: "exam",
-	}],
-	questions: [{ // lists quest by
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "questions",
-	}],
 	createdAt: {
 		type: Date,
 	},

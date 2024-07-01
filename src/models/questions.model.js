@@ -22,6 +22,10 @@ const QuestionSchema = new Schema({
 		enum: ["primarySchool", "secondarySchool", "highSchool", "IELTS", "TOEIC", "TOEFL"],
 		required: true
 	},
+	createdBy: { 
+		type: mongoose.Schema.Types.ObjectId, 
+		ref: 'users' 
+	},
 	createdAt: {
 		type: Date,
 	},
