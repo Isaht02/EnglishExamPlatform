@@ -4,29 +4,32 @@ const questionsController = require('./questions.controller')
 
 module.exports = {
 	doAnExam: async function(req, res, next) {
-		const { examID, answers } = req.body;
+		const { answersUser } = req.body
+		const examID = req.params.id
 		try {
-			let exam = await Exam.findById(req.params.id).populate("questions")
+			let exam = await Exam.findById(examID).populate("questions")
 			if (exam == null) {
-				return res.status(400)
+				return res.status(400) // show err, cant find exam
 			}
 
-			let score = 0
+			let overallScore = 0
+			const answerSheet = []
 			for (let quest of exam.questions) {
-				for ({answerID, questionID} of answer) {
+				for (let {answerID, questionID} of answersUser) {
 					if (questionID == quest._id) {
-						let actualCorrectAnswer = quest.answer.find((answer) => answer.isCorrectAnswer == true)
-					}
-					if (actualCorrectAnswer._id == answerID) {
-						overallScore += 10/exam.questions.length
+						let correctAnswer = quest.answers.find((answer) => answer.isCorrectAnswer == true)
+						if (correctAnswer._id == answerID) 
+							overallScore += 10/exam.questions.length
+						answerSheet.push(answerID)
 					}
 				}
 			}
 
 			let newEnrolledExam = new EnrolledExam({
 				examID: examID,
-				answers: answers,
-				score: overallScore
+				answers: answerSheet,
+				score: overallScore,
+				completed: true
 			})
 			const enrolledExam = await newEnrolledExam.save()
 
