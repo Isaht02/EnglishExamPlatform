@@ -24,13 +24,13 @@ const createAdmin = async (req, res) => {
   // if (error) {
   //   return res.status(400).send(error.details[0].message);
   // }
-  const { username, password, email, level } = req.body;
+  const { username, password, email, roleName } = req.body;
   try {
     await adminService.createAdmin({
       username,
       password,
       email,
-      level,
+      roleName,
     });
     res.status(200).json({ message: "Admin created successfully" });
   } catch (error) {
@@ -65,9 +65,24 @@ const createUser = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  // const { userId } = req.params;
+  try {
+    const user = await adminService.getUser();
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 module.exports = {
   adminSignIn,
   createAdmin,
   createUser,
+  getUser,
 };
