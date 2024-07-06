@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin.model");
 const User = require("../models/user.model");
+const Role = require("../models/role.model")
 require("dotenv").config();
 
 const signIn = async ({ email, password }) => {
@@ -49,23 +50,28 @@ const createAdmin = async ({
   username,
   password,
   email,
-  level,
+  roleName,
 }) => {
   const existingAdmin = await Admin.findOne({ email });
   if (existingAdmin) {
     throw new Error("Email already exists");
   }
 
+  const role = await Role.findOne({ roleName });
+  if (!role) {
+    throw new Error("Role not found!")
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
-  const adminLevel = level ? 1 : 3;
 
   const newAdmin = await Admin.create({
     username,
     password: hashedPassword,
     email,
-    level: adminLevel,
+    role: role._id,
   });
 
+  await newAdmin.save();
   return newAdmin;
 };
 
@@ -92,9 +98,18 @@ const createUser = async ({
   return newUser;
 };
 
+const getUser = async () => {
+  const user = await User.find();
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+};
+
 module.exports = {
   signIn,
   signOut,
   createAdmin,
   createUser,
+  getUser,
 };

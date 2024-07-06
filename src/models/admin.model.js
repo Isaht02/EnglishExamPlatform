@@ -15,10 +15,10 @@ const adminSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    level: {
-        type: Number,
-        default: 1,
-    },
+    role: {
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Role'
+    }
 }, { timestamps: true });
 
 const Admin = mongoose.model('Admin', adminSchema);
