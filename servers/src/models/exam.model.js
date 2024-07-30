@@ -6,6 +6,14 @@ const ExamSchema = new Schema({
 		type: String,
 		required: true
 	},
+	type: {
+		type: String,
+		required: true
+	},
+	level: {
+		type: String,
+		required: true
+	},
 	questions: [{ 
 		type: mongoose.Schema.Types.ObjectId, 
 		ref: 'questions' 
@@ -14,6 +22,18 @@ const ExamSchema = new Schema({
 		type: mongoose.Schema.Types.ObjectId, 
 		ref: 'users' 
 	},
+	user_tests: {
+		type: Number,
+		default: 0
+	},
+	user_views: {
+		type: Number,
+		default: 0
+	},
+	test_rate:[{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'reviewExam'
+	}],
   	createdAt: { 
 		type: Date, 
 		default: Date.now 
