@@ -7,6 +7,7 @@ const adminRoute = require("./src/routes/admin.route");
 const userRoute = require("./src/routes/user.route");
 const questionRoute = require("./src/routes/questions.route");
 const examRoute = require("./src/routes/exam.route");
+const docRoute = require("./src/routes/document.route");
 
 require("dotenv").config();
 
@@ -16,6 +17,7 @@ app.use("/", adminRoute);
 app.use("/", userRoute);
 app.use("/api/questions", questionRoute);
 app.use("/api/exam", examRoute);
+app.use("/api/doc", docRoute);
 
 // app.use(express.static(path.join(__dirname, 'src')));
 

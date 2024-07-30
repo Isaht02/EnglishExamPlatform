@@ -7,9 +7,9 @@ module.exports = {
 		try {
 			let randomQuestion = new Set()
 			let questions = await QuestionsSchema.find({level: req.body.level}).limit(30)
-
+			let numberQuest = req.body.numbers
 			for (let question in questions) {
-				if (randomQuestion.size >= 5) 
+				if (randomQuestion.size >= numberQuest) 
 					break
 				randomQuestion.add(questions[Math.floor(Math.random() * questions.length)]._id)
 			}
