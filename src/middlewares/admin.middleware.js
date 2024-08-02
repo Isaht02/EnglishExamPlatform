@@ -25,16 +25,16 @@ const auth = (requiredLevel) => {
       }
     },
     // Authorize based on admin level
-    (req, res, next) => {
-        if (req.method === 'GET') {
-            next();
-        } else {
-            if (req.admin.level !== requiredLevel) {
-              return res.status(403).json({ message: 'You are not authorized to perform this operation' });
-            }
-            next();
-        }
-    }
+    // (req, res, next) => {
+    //     if (req.method === 'GET') {
+    //         next();
+    //     } else {
+    //         if (req.admin.level !== requiredLevel) {
+    //           return res.status(403).json({ message: 'You are not authorized to perform this operation' });
+    //         }
+    //         next();
+    //     }
+    // }
   ];
 };
 
