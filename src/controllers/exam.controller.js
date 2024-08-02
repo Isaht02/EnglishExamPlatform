@@ -15,7 +15,9 @@ module.exports = {
 			}
 			const newExam = new Exam({
 				title: req.body.title,
-				questions: Array.from(randomQuestion)
+				questions: Array.from(randomQuestion),
+				createdBy: req.user,
+				duration: req.body.duration
 			})
 			const examByLevel = await newExam.save();
 			return res.status(200).json(examByLevel);

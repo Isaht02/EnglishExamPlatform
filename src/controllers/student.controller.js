@@ -29,6 +29,7 @@ module.exports = {
 				examID: examID,
 				answers: answerSheet,
 				score: overallScore,
+				studentID: req.user,
 				completed: true
 			})
 			const enrolledExam = await newEnrolledExam.save()
