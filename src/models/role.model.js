@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const roleSchema = new mongoose.Schema({
     roleName: {
         type: String,
-        enum: ['user', 'teacher', 'admin'],
-        required: true
+        enum: ['student', 'teacher', 'admin'],
+        required: true,
+        default: 'student'
     }
 });
 

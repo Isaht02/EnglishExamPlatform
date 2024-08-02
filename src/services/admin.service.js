@@ -8,37 +8,6 @@ const Question = require("../models/questions.model");
 const Document = require("../models/document.model");
 require("dotenv").config();
 
-const signIn = async ({ email, password }) => {
-  const admin = await Admin.findOne({ email });
-  if (!admin) {
-    throw new Error("Email does not exist");
-  }
-
-  // if (admin.isBlocked) {
-  //   throw new Error("Your account has been blocked");
-  // }
-
-  const validPassword = await bcrypt.compare(password, admin.password);
-  if (!validPassword) {
-    throw new Error("Invalid password");
-  }
-
-  const token = jwt.sign(
-    {
-      _id: admin._id,
-      username: admin.username,
-      email: admin.email,
-      level: admin.level,
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: "168h",
-    }
-  );
-
-  return { token, admin };
-};
-
 //Admin
 const createAdmin = async ({
   username,
@@ -72,12 +41,17 @@ const createAdmin = async ({
 const createUser = async ({
   email,
   password,
-  firstname,
-  lastname,
+  fullname,
+  roleName,
 }) => {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new Error("Email already exists");
+  }
+
+  const role = await Role.findOne({ roleName });
+  if (!role) {
+    throw new Error("Role not found!")
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -85,10 +59,11 @@ const createUser = async ({
   const newUser = await User.create({
     email,
     password: hashedPassword,
-    firstname,
-    lastname,
+    fullname,
+    role: role._id,
   });
 
+  await newUser.save();
   return newUser;
 };
 
@@ -189,7 +164,6 @@ const deleteDocument = async (id) => {
 }
 
 module.exports = {
-  signIn,
   createAdmin,
   createUser,
   getUser,

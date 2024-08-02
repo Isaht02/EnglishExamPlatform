@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const adminRoute = require("./src/routes/admin.route");
 const userRoute = require("./src/routes/user.route");
@@ -11,6 +12,7 @@ const docRoute = require("./src/routes/document.route");
 
 require("dotenv").config();
 
+app.use(cors())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 app.use("/", adminRoute);
