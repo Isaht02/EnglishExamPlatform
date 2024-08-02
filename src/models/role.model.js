@@ -6,6 +6,10 @@ const roleSchema = new mongoose.Schema({
         enum: ['student', 'teacher', 'admin'],
         required: true,
         default: 'student'
+    },
+    priority: {
+        type: Number,
+        default: 0
     }
 });
 

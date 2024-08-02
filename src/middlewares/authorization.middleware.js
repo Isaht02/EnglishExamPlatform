@@ -12,11 +12,16 @@ const authorization = (requiredRole) => {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       const user = await User.findById(decoded._id).populate('role');
 
+      const priorityRole = new Map([
+        ["admin", 2],
+        ["teacher", 1],
+        ["student", 0]
+      ]);
       if (!user) {
         return res.status(401).json({ message: 'Please check your account again or permission is not granted' });
       }
 
-      if (user.role.roleName !== requiredRole) {
+      if (user.role.priority < priorityRole.get(requiredRole)) {
         return res.status(403).json({ message: 'You are not authorized to perform this operation' });
       }
 
