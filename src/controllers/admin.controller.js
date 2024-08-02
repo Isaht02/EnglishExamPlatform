@@ -1,24 +1,5 @@
 const adminService = require("../services/admin.service");
 
-//Sign in
-const adminSignIn = async (req, res) => {
-  // const { error } = adminSignInSchema.validate(req.body);
-  // if (error) {
-  //   return res.status(400).send(error.details[0].message);
-  // }
-  const { email, password } = req.body;
-  try {
-    const { token, admin } = await adminService.signIn({
-      email,
-      password,
-    });
-    res.status(200).json({ message: "Login successful", token, admin });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 const createAdmin = async (req, res) => {
   // const { error } = adminSchema.validate(req.body);
   // if (error) {
@@ -47,13 +28,13 @@ const createUser = async (req, res) => {
   // if (error) {
   //   return res.status(400).send(error.details[0].message);
   // }
-  const { email, password, firstname, lastname } = req.body;
+  const { email, password, fullname, roleName } = req.body;
   try {
     await adminService.createUser({
       email,
       password,
-      firstname,
-      lastname,
+      fullname,
+      roleName,
     });
     res.status(200).json({ message: "User created successfully" });
   } catch (error) {
@@ -230,7 +211,6 @@ const deleteDocument = async (req, res) => {
 };
 
 module.exports = {
-  adminSignIn,
   createAdmin,
   createUser,
   getUser,
