@@ -1,13 +1,14 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require('../models/user.model');
+const Role = require('../models/role.model');
 
 const signUp = async ({
   email,
   password,
   confirmPassword,
   fullname,
-  type,
+  roleName,
 }) => {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -21,13 +22,18 @@ const signUp = async ({
     throw error;
   }
 
+  const role = await Role.findOne({ roleName });
+  if (!role) {
+    throw new Error("Role not found!")
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = await User.create({
     email,
     password: hashedPassword,
     fullname,
-    type, 
+    role: role._id, 
   });
 
   return newUser;
@@ -54,7 +60,7 @@ const signIn = async ({ email, password }) => {
       _id: user._id,
       email: user.email,
       fullname: user.fullname,
-      type: user.type,
+      role: user.role,
     },
     process.env.ACCESS_TOKEN_SECRET,
     {

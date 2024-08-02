@@ -1,6 +1,5 @@
 const express = require("express");
 const { 
-  adminSignIn,
   createAdmin,
   getUser,
   getUserById,
@@ -17,11 +16,9 @@ const {
   deleteDocument,
 } = require("../controllers/admin.controller");
 const authorization = require("../middlewares/authorization.middleware");
-
 const router = express.Router();
 
-router.post("/admin/signin", adminSignIn);
-// router.post("/admin", createAdmin);
+router.post("/admin", authorization('admin'), createAdmin);
 
 router
   .route("/admin/user")
