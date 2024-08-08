@@ -39,7 +39,25 @@ const signIn = async (req, res) => {
   }
 };
 
+const getMe = async (req, res) => {
+  const { user } = req;
+  res.json({ user });
+}
+
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await userService.getUserById(id);
+    res.json({ user });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
+  getMe,
+  getUserById
 };

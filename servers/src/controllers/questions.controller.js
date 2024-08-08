@@ -3,7 +3,6 @@ const Questions = require('../models/questions.model')
 module.exports = {
 	
 	createQuestion: async function(req, res, next) {
-		
 		try {
 			const newQuestion = new Questions({
 				text: req.body.questionText,
