@@ -87,6 +87,26 @@ const deleteUser = async (req, res) => {
   } 
 };
 
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { email, password, fullname, roleName } = req.body;
+  try {
+    const user = await adminService.updateUser(id, {
+      email,
+      password,
+      fullname,
+      roleName,
+    });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const getExams = async (req, res) => {
   try {
     const exam = await adminService.getExams();
@@ -216,6 +236,7 @@ module.exports = {
   getUser,
   getUserById,
   deleteUser,
+  updateUser,
   getExams,
   getQuestions,
   getDocuments,
