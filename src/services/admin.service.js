@@ -91,6 +91,14 @@ const deleteUser = async (id) => {
   return user;
 };
 
+const updateUser = async (id, updatedUser) => {
+  const user = await User.findByIdAndUpdate(id, updatedUser, { new: true });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+}
+
 const getExams = async () => {
   const exam = await Exam.find();
   if (!exam) {
@@ -169,6 +177,7 @@ module.exports = {
   getUser,
   getUserById,
   deleteUser,
+  updateUser,
   getExams,
   getQuestions,
   getDocuments,

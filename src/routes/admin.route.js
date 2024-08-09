@@ -5,6 +5,7 @@ const {
   getUserById,
   createUser,
   deleteUser,
+  updateUser,
   getExams,
   getQuestions,
   getDocuments,
@@ -15,6 +16,8 @@ const {
   deleteQuestion,
   deleteDocument,
 } = require("../controllers/admin.controller");
+const QuestionsController = require('../controllers/questions.controller')
+const ExamController = require('../controllers/exam.controller')
 const authorization = require("../middlewares/authorization.middleware");
 const router = express.Router();
 
@@ -29,9 +32,12 @@ router
   .route("/admin/user/:id")
   .get(authorization('admin'), getUserById)
   .delete(authorization('admin'), deleteUser)
+  .put(authorization('admin'), updateUser)
 
 router.get("/admin/exam", authorization('admin'), getExams)
+router.post('/admin/exam', authorization('admin'), ExamController.createExamByLevel)
 router.get("/admin/question", authorization('admin'), getQuestions)
+router.post("/admin/question", authorization('admin'), QuestionsController.createQuestion)
 router.get("/admin/document", authorization('admin'), getDocuments)
 
 router.get("/admin/exam/:id", authorization('admin'), getExamById)
