@@ -92,6 +92,16 @@ const deleteUser = async (id) => {
 };
 
 const updateUser = async (id, updatedUser) => {
+  const { roleName } = updatedUser;
+  
+  if (roleName) {
+    const role = await Role.findOne({ roleName });
+    if (!role) {
+      throw new Error("Role not found!");
+    }
+    updatedUser.role = role._id;
+  }
+  
   const user = await User.findByIdAndUpdate(id, updatedUser, { new: true });
   if (!user) {
     throw new Error("User not found");
@@ -171,6 +181,30 @@ const deleteDocument = async (id) => {
   return document;
 }
 
+const updateExam = async (id, updatedExam) => {
+  const exam = await Exam.findByIdAndUpdate(id, updatedExam, { new: true });
+  if (!exam) {
+    throw new Error("Exam not found");
+  }
+  return exam;
+}
+
+const updatedQuestion = async (id, updatedQuestion) => {
+  const question = await Question.findByIdAndUpdate(id, updatedQuestion, { new: true });
+  if (!question) {
+    throw new Error("Question not found");
+  }
+  return question;
+}
+
+const updateDocument = async (id, updatedDocument) => {
+  const document = await Document.findByIdAndUpdate(id, updatedDocument, { new: true });
+  if (!document) {
+    throw new Error("Document not found");
+  }
+  return document;
+}
+
 module.exports = {
   createAdmin,
   createUser,
@@ -187,4 +221,7 @@ module.exports = {
   deleteExam,
   deleteQuestion,
   deleteDocument,
+  updateExam,
+  updatedQuestion,
+  updateDocument,
 };
