@@ -230,6 +230,64 @@ const deleteDocument = async (req, res) => {
   }
 };
 
+const updateExam = async (req, res) => { 
+  const { id } = req.params;
+  const { title, level, duration } = req.body;
+  try {
+    const exam = await adminService.updateExam(id, {
+      title,
+      level,
+      duration,
+    });
+    if (!exam) {
+      return res.status(404).json({ error: "Exam not found" });
+    }
+    res.status(200).json({ message: "Exam updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const updateQuestion = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, difficulty, answers } = req.body;
+  try {
+    const question = await adminService.updateQuestion(id, {
+      title,
+      description,
+      difficulty,
+      answers,
+    });
+    if (!question) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+    res.status(200).json({ message: "Question updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const updateDocument = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, content } = req.body;
+  try {
+    const document = await adminService.updateDocument(id, {
+      title,
+      description,
+      content,
+    });
+    if (!document) {
+      return res.status(404).json({ error: "Document not found" });
+    }
+    res.status(200).json({ message: "Document updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   createAdmin,
   createUser,
@@ -246,4 +304,7 @@ module.exports = {
   deleteExam,
   deleteQuestion,
   deleteDocument,
+  updateExam,
+  updateQuestion,
+  updateDocument,
 };
