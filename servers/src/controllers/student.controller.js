@@ -31,6 +31,7 @@ module.exports = {
 				score: overallScore,
 				completed: true
 			})
+			await Exam.findByIdAndUpdate(examID, { $inc: { user_tests: 1 } })
 			const enrolledExam = await newEnrolledExam.save()
 
 			return res.status(200).json(enrolledExam);
