@@ -288,6 +288,20 @@ const updateDocument = async (req, res) => {
   }
 };
 
+const getEnrolledUsers = async (req, res) => {
+  const { userId } = req.params;
+    try {
+      const enrolledExams = await adminService.getEnrolledUserById(userId);
+      if (!enrolledExams) {
+        return res.status(404).json({ error: "Enrolled exams not found" });
+      }
+      res.status(200).json(enrolledExams);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 module.exports = {
   createAdmin,
   createUser,
@@ -307,4 +321,5 @@ module.exports = {
   updateExam,
   updateQuestion,
   updateDocument,
+  getEnrolledUsers,
 };
