@@ -6,6 +6,7 @@ const Role = require("../models/role.model")
 const Exam = require("../models/exam.model");
 const Question = require("../models/questions.model");
 const Document = require("../models/document.model");
+const EnrolledExam = require("../models/enrolledExam.model");
 require("dotenv").config();
 
 //Admin
@@ -205,6 +206,14 @@ const updateDocument = async (id, updatedDocument) => {
   return document;
 }
 
+const getEnrolledUserById = async (userId) => {
+  const enrolledExams = await EnrolledExam.find({ studentID: userId }).populate('examID');
+  if (!enrolledExams) {
+    throw new Error("Enrolled exams not found");
+  }
+  return enrolledExams;
+}
+
 module.exports = {
   createAdmin,
   createUser,
@@ -224,4 +233,5 @@ module.exports = {
   updateExam,
   updatedQuestion,
   updateDocument,
+  getEnrolledUserById,
 };

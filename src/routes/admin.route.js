@@ -18,6 +18,7 @@ const {
   updateExam,
   updateQuestion,
   updateDocument,
+  getEnrolledUsers,
 } = require("../controllers/admin.controller");
 const QuestionsController = require('../controllers/questions.controller')
 const ExamController = require('../controllers/exam.controller')
@@ -55,5 +56,7 @@ router.post("/admin/document", authorization('admin'), DocumentController.create
 router.get("/admin/document/:id", authorization('admin'), getDocumentById)
 router.put("/admin/document/:id", authorization('admin'), updateDocument)
 router.delete("/admin/document/:id", authorization('admin'), deleteDocument)
+
+router.get("/admin/enrolled/:userId", authorization('admin'), getEnrolledUsers)
 
 module.exports = router;
