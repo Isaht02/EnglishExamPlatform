@@ -18,6 +18,10 @@ const ExamSchema = new Schema({
 		type: mongoose.Schema.Types.ObjectId, 
 		ref: 'questions' 
 	}],
+	duration: { //duration in minutes
+		type: Number, 
+		required: true
+	},
   	createdBy: { 
 		type: mongoose.Schema.Types.ObjectId, 
 		ref: 'users' 

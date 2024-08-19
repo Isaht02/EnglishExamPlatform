@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const clientSchema = new mongoose.Schema({
     email: {
 		type:String,
 		required: true,
@@ -14,6 +14,11 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		require: true
 	},
+	// type: {
+	// 	enum: ["student", "teacher", "admin"],
+	// 	type: String,
+	// 	default: "student",
+	// },
 	role: {
 		type: mongoose.Schema.Types.ObjectId,
         ref: 'Role'
@@ -23,6 +28,6 @@ const userSchema = new mongoose.Schema({
 	},
 });
 
-const User = mongoose.model('User', userSchema);
+const Client = mongoose.model('Client', clientSchema);
 
-module.exports = User;
+module.exports = Client;

@@ -29,6 +29,7 @@ module.exports = {
 				examID: examID,
 				answers: answerSheet,
 				score: overallScore,
+				studentID: req.user,
 				completed: true
 			})
 			await Exam.findByIdAndUpdate(examID, { $inc: { user_tests: 1 } })

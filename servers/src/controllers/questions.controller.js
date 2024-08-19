@@ -7,6 +7,7 @@ module.exports = {
 			const newQuestion = new Questions({
 				text: req.body.questionText,
 				answers: req.body.answers,
+				createdBy: req.user,
 				level: req.body.level
 			});
 	  
