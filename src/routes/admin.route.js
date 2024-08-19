@@ -24,6 +24,7 @@ const QuestionsController = require('../controllers/questions.controller')
 const ExamController = require('../controllers/exam.controller')
 const DocumentController = require('../controllers/document.controller')
 const authorization = require("../middlewares/authorization.middleware");
+const studentController = require("../controllers/student.controller");
 const router = express.Router();
 
 router.post("/admin", authorization('admin'), createAdmin);
@@ -58,5 +59,10 @@ router.put("/admin/document/:id", authorization('admin'), updateDocument)
 router.delete("/admin/document/:id", authorization('admin'), deleteDocument)
 
 router.get("/admin/enrolled/:userId", authorization('admin'), getEnrolledUsers)
+
+
+router.get("/enrolled", authorization('student'), studentController.getEnrolledExams)
+router.get("/enrolled/:id", authorization('student'), studentController.getEnrolledExamsById)
+router.get("/question/:id", authorization('student'), getQuestionById)
 
 module.exports = router;

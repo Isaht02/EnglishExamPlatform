@@ -42,4 +42,27 @@ module.exports = {
 		}
 	},
 
+	getEnrolledExams: async function(req, res, next) {
+		try {
+			let id = req.user._id
+			const enrolledExams = await EnrolledExam.find({ studentID: id }).populate('examID');
+			return res.status(200).json(enrolledExams);
+		}
+		catch (error) {
+			console.log(error)
+			res.status(500)
+		} 
+	},
+
+	getEnrolledExamsById: async function(req, res, next) {
+		try {
+			let enrolledId = req.params.id
+			const enrolledExams = await EnrolledExam.findById(enrolledId).populate('examID');
+			return res.status(200).json(enrolledExams);
+		}
+		catch (error) {
+			console.log(error)
+			res.status(500)
+		} 
+	},
 }
