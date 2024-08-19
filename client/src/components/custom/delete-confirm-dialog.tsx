@@ -21,16 +21,16 @@ export function DeleteConfirm({ type, id }: DeleteConfirmProps) {
     try {
       switch (type) {
         case 'user':
-          await apiClient.delete(`/admin/user/${id}`);
+          await apiClient.delete(`/api/admin/user/${id}`);
           break;
         case 'exam':
-          await apiClient.delete(`/admin/exam/${id}`);
+          await apiClient.delete(`/api/admin/exam/${id}`)
           break;
         case 'question':
-          await apiClient.delete(`/admin/question/${id}`);
+          await apiClient.delete(`/api/admin/question/${id}`)
           break;
         case 'document':
-          await apiClient.delete(`/admin/document/${id}`);
+          await apiClient.delete(`/api/admin/document/${id}`)
           break;
         default:
           throw new Error('Invalid type');

@@ -11,7 +11,19 @@ const ExamType = Object.freeze({
     SPEAKING: 3
 });
 
+const StatusSendMessage = Object.freeze({
+    SENT: 0,
+    RECEIVED: 1,
+    SEEN: 2
+});
+
+const status_conversation = Object.freeze({
+    ACTIVE: 0,
+    INACTIVE: 1
+});
+
 module.exports = {
   ExamLevel,
-  ExamType
+  ExamType,
+  StatusSendMessage
 };

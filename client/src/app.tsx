@@ -24,6 +24,8 @@ import Docs from '../src/pages/docs/document'
 import DocsDetail from '../src/pages/docs/document-detail'
 import Examination from '../src/pages/examination/exam-test'
 import ExamList from '../src/pages/examination/exam-list'
+import UiChat from '../src/pages/chat/ui-chat'
+
 
 const AppRouter = () => {
   return (
@@ -35,13 +37,10 @@ const AppRouter = () => {
             path='dashboard'
             element={<ProtectedRoute element={<Dashboard />} />}
           />
-          <Route
-            path='user'
-            element={<ProtectedRoute element={<User /> } />}
-          />
+          <Route path='user' element={<ProtectedRoute element={<User />} />} />
           <Route
             path='user/add'
-            element={<ProtectedRoute element={<AddUser /> } />}
+            element={<ProtectedRoute element={<AddUser />} />}
           />
           <Route
             path='user/edit/:id'
@@ -51,10 +50,7 @@ const AppRouter = () => {
             path='user/detail/:id'
             element={<ProtectedRoute element={<DetailUser />} />}
           />
-          <Route
-            path='exam'
-            element={<ProtectedRoute element={<Exam /> } />}
-          />
+          <Route path='exam' element={<ProtectedRoute element={<Exam />} />} />
           <Route
             path='exam/edit/:id'
             element={<ProtectedRoute element={<EditExam />} />}
@@ -65,11 +61,11 @@ const AppRouter = () => {
           />
           <Route
             path='question'
-            element={<ProtectedRoute element={<Question /> } />}
+            element={<ProtectedRoute element={<Question />} />}
           />
           <Route
             path='question/add'
-            element={<ProtectedRoute element={<AddQuestion /> } />}
+            element={<ProtectedRoute element={<AddQuestion />} />}
           />
           <Route
             path='question/edit/:id'
@@ -81,11 +77,12 @@ const AppRouter = () => {
           />
           <Route
             path='document'
-            element={<ProtectedRoute element={<Document /> } />}
+            element={<Document />}
+            // element={<ProtectedRoute element={<Document />} />}
           />
           <Route
             path='document/add'
-            element={<ProtectedRoute element={<AddDocument /> } />}
+            element={<ProtectedRoute element={<AddDocument />} />}
           />
           <Route
             path='document/edit/:id'
@@ -95,34 +92,17 @@ const AppRouter = () => {
             path='document/detail/:id'
             element={<ProtectedRoute element={<DetailDocument />} />}
           />
-          <Route
-            path='course'
-            element={<ComingSoon />}
-          />
+          <Route path='course' element={<ComingSoon />} />
           <Route
             path='coming-soon'
             element={<ProtectedRoute element={<ComingSoon />} />}
           />
-          <Route
-            path='exam'
-            element={<ExamList />}
-          />
-          <Route
-            path='docs'
-            element={<Docs />}
-          />
-          <Route
-            path='docs/detail/:id'
-            element={<DocsDetail />}
-          />
-          <Route
-            path='examination'
-            element={<ExamList />}
-          />
-          <Route
-            path='examination/test/:id'
-            element={<Examination />}
-          />
+          <Route path='chatbox' element={<UiChat />} />
+          <Route path='exam' element={<ExamList />} />
+          <Route path='docs' element={<Docs />} />
+          <Route path='docs/detail/:id' element={<DocsDetail />} />
+          <Route path='examination' element={<ExamList />} />
+          <Route path='examination/test/:id' element={<Examination />} />
         </Route>
       </Routes>
     </Router>

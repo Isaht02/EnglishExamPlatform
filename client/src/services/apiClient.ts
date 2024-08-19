@@ -11,6 +11,8 @@ const apiClient = axios.create({
   timeout: 90000,
 })
 
+console.log('apiClient', apiClient)	// debug
+
 apiClient.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get('accesstoken')

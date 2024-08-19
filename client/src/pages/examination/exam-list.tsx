@@ -95,6 +95,7 @@ export default function Apps() {
         <Separator className='shadow' />
         <ul className='faded-bottom no-scrollbar grid gap-4 overflow-auto pb-16 pt-4 md:grid-cols-2 lg:grid-cols-4'>
           {Array.isArray(data) ? (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data.map((exam: any, index: any) => (
               <Card className='' key={`exam-${index}`}>
                 <div className='rounded-lg p-4 hover:shadow-md'>

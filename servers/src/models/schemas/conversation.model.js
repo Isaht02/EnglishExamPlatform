@@ -15,6 +15,10 @@ const Conversation = new Schema({
   content: {
     type: String,
   },
+  status_conversation: {
+    type: String,
+    default: '0',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

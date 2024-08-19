@@ -20,10 +20,10 @@ import {
 } from '@tabler/icons-react'
 
 export default function Dashboard() {
-  const { data: user } = useFetchData('/admin/user');
-  const { data: exam } = useFetchData('/admin/exam');
-  const { data: question } = useFetchData('/admin/question');
-  const { data: document } = useFetchData('/admin/document');
+  const { data: user } = useFetchData('/api/admin/user')
+  const { data: exam } = useFetchData('/api/admin/exam')
+  const { data: question } = useFetchData('/api/admin/question')
+  const { data: document } = useFetchData('/api/admin/document')
 
   const userCount = user?.user?.length || 0;
   const examCount = exam?.exam?.length || 0;

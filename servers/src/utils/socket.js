@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 const jwt = require("jsonwebtoken");
 const Conversation = require("../models/schemas/conversation.model");
 const { ObjectId } = require("mongodb");
+const User = require("../models/user.model");
 const initSocket = (httpServer) => {
   const io = new Server(httpServer, {
     cors: { origin: "http://localhost:5173" },
@@ -56,12 +57,13 @@ const initSocket = (httpServer) => {
     });
     socket.on("send_message", async (data) => {
       const { receiver_id, sender_id, content } = data.payload;
+      console.log(data.payload);
       const receive_socket_id = users[receiver_id]?.socket_id;
-      console.log(receive_socket_id);
       const conversation = new Conversation({
         sender_id: sender_id,
         receiver_id: receiver_id,
         content,
+        status_message: 0,
       });
       const result = await conversation.save();
       conversation._id = result._id.toString();
@@ -71,7 +73,7 @@ const initSocket = (httpServer) => {
         });
       }
     });
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
       delete users[user_id];
       console.log(`user ${socket.id} disconnected`);
     });

@@ -117,6 +117,7 @@ export default function Apps() {
             <Card className=''>
               <div className='grid gap-2 rounded-lg p-4 hover:shadow-md md:grid-cols-6 lg:grid-cols-10'>
                 {Array.isArray(data.questions) &&
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   data.questions?.map(( question: any, index: any) => (
                     <Button
                       key={`btn-question-${index}`}

@@ -59,7 +59,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setIsLoading(true)
 
     try {
-      const response = await apiService.post('/signin', data)
+      const response = await apiService.post('/api/signin', data)
       const accessToken = response.token
       Cookies.set('accesstoken', accessToken, { expires: 7 })
       localStorage.setItem('userData', JSON.stringify(response.user));

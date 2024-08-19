@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		default: "student",
 	},
+	active: {
+		type: Boolean,
+		default: true,
+	},
 	enrolledExams: [{ // view exam done => check final grade
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "enrolledExam"
