@@ -5,7 +5,7 @@ import axios from 'axios'
 import InfiniteScroll from 'react-infinite-scroller'
 import useConversation from '@/services/components/useConversation'
 /** @format */
-const profile = JSON.parse(localStorage.getItem('userData') ?? '') || {}
+// const profile = JSON.parse(localStorage.getItem('userData') ?? '') || {}
 const socket = io('http://localhost:4000', {
   auth: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,

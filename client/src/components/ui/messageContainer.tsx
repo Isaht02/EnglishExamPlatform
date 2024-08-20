@@ -43,7 +43,7 @@ export default function MessageContainer() {
               {''}
               <span className='m-1 font-bold text-gray-900'>{value}</span>
             </div>
-            <Messages />
+            {/* <Messages /> */}
           </>
         )}
       </div>

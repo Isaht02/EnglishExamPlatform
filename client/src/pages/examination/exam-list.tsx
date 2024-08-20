@@ -7,12 +7,91 @@ import { Separator } from '@/components/ui/separator'
 import { UserNav } from '@/components/user-nav'
 import { IconArrowLeft } from '@tabler/icons-react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-// import { apps } from './data'
-import useFetchData from '@/services/components/getData'
+import { createSearchParams, useNavigate } from 'react-router-dom'
+import useQueryConfig from '@/hook/useQueryConfig'
+import { sortBy, examcontants as exam, examLevels } from '@/constants/exams'
+import { omit } from 'lodash'
+import classNames from 'classnames'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import examsApi from '@/services/components/exam.api'
+
+type ExamListConfig = {
+  page?: number | string
+  limit?: number | string
+  sort_by?: 'createdAt' | 'doTest' | 'view'
+  title?: string
+  level?: string
+  examcontants?: 'asc' | 'desc'
+  user_tests_min?: string
+  user_tests_max?: string
+  test_rate?: string
+  user_views_min?: string
+  user_views_max?: string
+}
 
 export default function Apps() {
   const navigate = useNavigate()
+  const queryConfig = useQueryConfig()
+  console.log('QueryConfig',queryConfig)
+  const { sort_by = sortBy.createdAt, examcontants } = queryConfig
+
+  // const { data } = useFetchData('/api/exam')
+  // const data = useFetchData('/api/exam')
+  const { data: examsList } = useQuery({
+    queryKey: ['exams', queryConfig],
+    queryFn: () => {
+      return examsApi.getExams(queryConfig as ExamListConfig)
+    },
+    placeholderData: keepPreviousData,
+    staleTime: 3 * 60 * 1000,
+  })
+
+  console.log(examsList)
+
+  const data = examsList?.data
+  const isActiveSortBy = (
+    value: Exclude<ExamListConfig['sort_by'], undefined>
+  ) => sort_by === value
+
+  const handleSort = (value: Exclude<ExamListConfig['sort_by'], undefined>) => {
+    navigate({
+      pathname: '/examination',
+      search: createSearchParams(
+        omit(
+          {
+            ...queryConfig,
+            sort_by: value,
+          },
+          ['examcontants']
+        )
+      ).toString(),
+    })
+  }
+
+  const handleRateExam = (
+    value: Exclude<ExamListConfig['examcontants'], undefined>
+  ) => {
+    navigate({
+      pathname: '/examination',
+      search: createSearchParams({
+        ...queryConfig,
+        sort_by: sortBy.rate_avg,
+        examscontants: value,
+      }).toString(),
+    })
+  }
+  const handleTypeExam = (
+    value: Exclude<ExamListConfig['level'], undefined>
+  ) => {
+    navigate({
+      pathname: '/examination',
+      search: createSearchParams({
+        ...queryConfig,
+        type: value,
+      }).toString(),
+    })
+  }
+
   // const [sort, setSort] = useState('ascending')
   // const [appType, setAppType] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
@@ -32,7 +111,8 @@ export default function Apps() {
   //         : true
   //   )
   //   .filter((app) => app.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  const { data } = useFetchData('/api/exam')
+
+  console.log(searchTerm)
   // console.log(data)
   return (
     <Layout fixed>
@@ -70,27 +150,120 @@ export default function Apps() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          {/* <Select value={sort} onValueChange={setSort}>
-            <SelectTrigger className='w-16'>
-              <SelectValue>
-                <IconAdjustmentsHorizontal size={18} />
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent align='end'>
-              <SelectItem value='ascending'>
-                <div className='flex items-center gap-4'>
-                  <IconSortAscendingLetters size={16} />
-                  <span>Ascending</span>
-                </div>
-              </SelectItem>
-              <SelectItem value='descending'>
-                <div className='flex items-center gap-4'>
-                  <IconSortDescendingLetters size={16} />
-                  <span>Descending</span>
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select> */}
+          <div className='flex flex-wrap items-center gap-2'>
+            <span>Sort by</span>
+            <button
+              className={classNames(
+                'hover:bg-orange-80 h-8 bg-orange-500 px-4 text-center text-sm capitalize',
+                {
+                  'bg-orange-80 text-white hover:bg-orange-500': isActiveSortBy(
+                    sortBy.user_views
+                  ),
+                  'bg-white text-black hover:bg-slate-100': !isActiveSortBy(
+                    sortBy.user_views
+                  ),
+                }
+              )}
+              onClick={() => handleSort(sortBy.user_views)}
+            >
+              Popular
+            </button>
+            <button
+              className={classNames(
+                'hover:bg-orange-80 h-8 bg-orange-500 px-4 text-center text-sm capitalize',
+                {
+                  'bg-orange-80 text-white hover:bg-orange-500': isActiveSortBy(
+                    sortBy.createdAt
+                  ),
+                  'bg-white text-black hover:bg-slate-100': !isActiveSortBy(
+                    sortBy.createdAt
+                  ),
+                }
+              )}
+              onClick={() => handleSort(sortBy.createdAt)}
+            >
+              Latest
+            </button>
+            <button
+              className={classNames(
+                'hover:bg-orange-80 h-8 bg-orange-500 px-4 text-center text-sm capitalize',
+                {
+                  'bg-orange-80 text-white hover:bg-orange-500': isActiveSortBy(
+                    sortBy.user_tests
+                  ),
+                  'bg-white text-black hover:bg-slate-100': !isActiveSortBy(
+                    sortBy.user_tests
+                  ),
+                }
+              )}
+              onClick={() => handleSort(sortBy.user_tests)}
+            >
+              Do the most
+            </button>
+            <select
+              className={classNames('capitaliz h-8 px-4 text-center text-sm', {
+                'bg-orange-500 hover:bg-orange-500': isActiveSortBy(
+                  sortBy.rate_avg
+                ),
+                'hover:bg-slate-100': !isActiveSortBy(sortBy.rate_avg),
+              })}
+              value={examcontants || ''}
+              onChange={(e) =>
+                handleRateExam(
+                  e.target.value as Exclude<
+                    ExamListConfig['examcontants'],
+                    undefined
+                  >
+                )
+              }
+            >
+              <option value='' disabled className='bg-white text-black'>
+                Rate
+              </option>
+              <option value={exam.asc} className='bg-white text-black'>
+                Rate: Low to High
+              </option>
+              <option value={exam.desc} className='bg-white text-black'>
+                Rate: High to Low
+              </option>
+            </select>
+            <select
+              className={classNames('capitaliz h-8 px-4 text-center text-sm', {
+                'bg-orange-500 hover:bg-orange-500': isActiveSortBy(
+                  sortBy.type
+                ),
+                'hover:bg-slate-100': !isActiveSortBy(sortBy.type),
+              })}
+              value={examcontants || ''}
+              onChange={(e) =>
+                handleTypeExam(
+                  e.target.value as Exclude<
+                    ExamListConfig['examcontants'],
+                    undefined
+                  >
+                )
+              }
+            >
+              <option value='' disabled className='bg-white text-black'>
+                Type
+              </option>
+              <option
+                value={examLevels.secondarySchool}
+                className='bg-white text-black'
+              >
+                SecondarySchool
+              </option>
+              <option
+                value={examLevels.highSchool}
+                className='bg-white text-black'
+              >
+                HighSchool
+              </option>
+              <option value={examLevels.ielts} className='bg-white text-black'>
+                IELTS
+              </option>
+            </select>
+          </div>
         </div>
         <Separator className='shadow' />
         <ul className='faded-bottom no-scrollbar grid gap-4 overflow-auto pb-16 pt-4 md:grid-cols-2 lg:grid-cols-4'>

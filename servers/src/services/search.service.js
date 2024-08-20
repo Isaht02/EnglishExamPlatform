@@ -7,48 +7,31 @@ class SearchService {
     type,
     level,
     title,
-    createdBy,
     user_tests_min,
+    sort_by,
+    examscontants,
     user_tests_max,
     user_views_min,
     user_views_max,
     test_rate,
   }) {
     try {
-      const $match = { $text: { $search: title } };
+      const $match = {};
+      if (title) $match.title = { $regex: title, $options: "i" };
 
-      if (type) $match.type = type;
-      if (level) $match.level = level;
-      if (createdBy) $match.createdBy = createdBy;
+      if (type) $match.type = Number(type);
+      if (level) $match.level = Number(level);
       if (user_tests_min && user_tests_max) {
-        $match.user_tests = { $gte: user_tests_min, $lte: user_tests_max };
-      } else {
-        if (user_tests_min) $match.user_tests = { $gte: user_tests_min };
-        if (user_tests_max) $match.user_tests = { $lte: user_tests_max };
+        $match.user_tests = { $gte: Number(user_tests_min), $lte: user_tests_max };
       }
       if (user_views_min) $match.user_views = { $gte: user_views_min };
       if (user_views_max) $match.user_views = { $lte: user_views_max };
-      if (test_rate) $match.test_rate = test_rate;
-
+      const sort = {};
+      sort[sort_by] = examscontants === "asc" ? 1 : -1;
       console.log($match);
-      console.log(level)
       const result = await Exam.aggregate([
         {
-          $match: {
-            $text: {
-              $search: title,
-            },
-            level: Number(level),
-            type: Number(type),
-            user_tests: {
-              $gte: Number(user_tests_min),
-              $lte: Number(user_tests_max),
-            },
-            user_views: {
-              $gte: Number(user_views_min),
-              $lte: Number(user_views_max),
-            },
-          },
+          $match,
         },
         {
           $lookup: {
@@ -69,9 +52,7 @@ class SearchService {
           },
         },
         {
-          $match: {
-            rate_avg: Number(test_rate)
-          },
+          $sort: sort
         },
       ]);
       return result;
