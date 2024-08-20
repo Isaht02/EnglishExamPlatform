@@ -21,20 +21,6 @@ app.use("/api/questions", questionRoute);
 app.use("/api/exam", examRoute);
 app.use("/api/doc", docRoute);
 
-// app.use(express.static(path.join(__dirname, 'src')));
-
-
-// Add your routes here
-// app.use((req, res) => {
-//   res.status(404).send("Not Found");
-// });
-
-// app.get('/', (req, res) => {
-//   res.send('Hello World 2!')
-// });
-
-
-
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {
